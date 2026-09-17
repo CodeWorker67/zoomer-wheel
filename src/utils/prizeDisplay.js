@@ -28,6 +28,23 @@ export function getPrizeTitle(prizeOrId) {
   }
 }
 
+/** Третья строка в блоке «Ваш приз» после выигрыша (нижний регистр). */
+export function getPrizeWinHint(prizeOrId) {
+  const prize = typeof prizeOrId === 'string' ? prizeById[prizeOrId] : prizeOrId;
+  if (!prize) return null;
+
+  switch (prize.kind) {
+    case 'gift':
+      return 'сейчас пришлем в бота ссылку на активацию подарка впн 1 месяц для друзей!';
+    case 'percent':
+      return 'активировать скидку можно после выбора тарифа в боте.';
+    case 'vpn':
+      return 'сейчас пришлем в бота уведомление о продлении вашей подписки!';
+    default:
+      return null;
+  }
+}
+
 /** Имя в ленте выигрышей: первая буква как в профиле, без смены регистра. */
 export function formatHistoryMaskedName(win) {
   if (!win) return '—';

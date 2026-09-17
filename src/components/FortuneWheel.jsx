@@ -7,7 +7,7 @@ import {
   WHEEL_PRIZES,
 } from '../data/prizes';
 import { beginWheelSpin, completeWheelSpin, isWheelApiConfigured } from '../api/wheelApi';
-import { getPrizeTitle } from '../utils/prizeDisplay';
+import { getPrizeTitle, getPrizeWinHint } from '../utils/prizeDisplay';
 import { useWheelState } from '../hooks/useWheelState';
 import AttemptsBanner from './AttemptsBanner';
 import RecentWinsTicker from './RecentWinsTicker';
@@ -336,15 +336,20 @@ export default function FortuneWheel() {
         </button>
       </div>
 
-      <div className="mt-6 min-h-[4.5rem] w-full text-center px-4">
+      <div className="mt-6 min-h-[5.5rem] w-full text-center px-4">
         {result ? (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card-dark inline-block px-6 py-4"
+            className="card-dark inline-block max-w-[min(100%,22rem)] px-6 py-4"
           >
             <p className="text-sm text-gray-400 mb-1">Ваш приз</p>
             <p className="text-lg font-bold text-gradient">{getPrizeTitle(result)}</p>
+            {getPrizeWinHint(result) ? (
+              <p className="mt-2 text-xs leading-snug text-gray-400 normal-case">
+                {getPrizeWinHint(result)}
+              </p>
+            ) : null}
           </motion.div>
         ) : (
           <p className="text-sm text-gray-500">{hintText}</p>
