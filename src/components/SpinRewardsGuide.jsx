@@ -42,6 +42,7 @@ export default function SpinRewardsGuide({
   paidFriends = 0,
   paidFriendsTotal = null,
   partnerFriendsCount = null,
+  onBuySubscription,
 }) {
   const { user, webApp } = useTelegram();
   const [copied, setCopied] = useState(false);
@@ -96,6 +97,18 @@ export default function SpinRewardsGuide({
           <RewardRow title="Подписка на 12 месяцев" spins={2} />
           <RewardRow title="Подписка на 24 месяца" spins={4} />
         </div>
+        {onBuySubscription && (
+          <button
+            type="button"
+            onClick={() => {
+              webApp?.HapticFeedback?.impactOccurred?.('light');
+              onBuySubscription();
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-zoomer-neon/35 bg-[#0a1020]/80 px-4 py-3.5 text-sm font-bold text-white transition-colors hover:border-zoomer-neon/55 hover:bg-zoomer-neon/5"
+          >
+            Купить подписку
+          </button>
+        )}
       </div>
 
       <div className="flex items-center gap-3 px-1">

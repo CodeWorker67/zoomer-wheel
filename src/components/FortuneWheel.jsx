@@ -12,6 +12,7 @@ import { useWheelState } from '../hooks/useWheelState';
 import AttemptsBanner from './AttemptsBanner';
 import RecentWinsTicker from './RecentWinsTicker';
 import SpinRewardsGuide from './SpinRewardsGuide';
+import SubscriptionCheckout from './SubscriptionCheckout';
 
 const CX = 200;
 const CY = 200;
@@ -139,7 +140,7 @@ function rotationDelta(currentDeg, winIndex) {
   return 360 * 7 + delta;
 }
 
-export default function FortuneWheel() {
+export default function FortuneWheel({ onScreenChange }) {
   const {
     activeAttempts,
     partnerFriendsCount,
@@ -157,6 +158,17 @@ export default function FortuneWheel() {
   const displayRotation = useTransform(rotation, (v) => `${v}deg`);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState(null);
+  const [screen, setScreen] = useState('wheel');
+
+  const goSubscription = useCallback(() => {
+    setScreen('subscription');
+    onScreenChange?.(false);
+  }, [onScreenChange]);
+
+  const goWheel = useCallback(() => {
+    setScreen('wheel');
+    onScreenChange?.(true);
+  }, [onScreenChange]);
   const speedDegPerSec = useRef(BASE_WHEEL_SPEED_DEG);
   const deceleratingRef = useRef(false);
   const spinAnimationRef = useRef(null);
@@ -263,6 +275,16 @@ export default function FortuneWheel() {
 
   const progressPaid = isWheelApiConfigured() ? partnerPaidProgress : 0;
 
+  if (screen === 'subscription') {
+    return (
+      <SubscriptionCheckout
+        initData={initData}
+        webApp={webApp}
+        onBackWheel={goWheel}
+      />
+    );
+  }
+
   return (
     <div className="flex flex-col items-center w-full max-w-[min(100vw,420px)] mx-auto">
       {error && (
@@ -364,6 +386,7 @@ export default function FortuneWheel() {
           paidFriends={progressPaid}
           paidFriendsTotal={partnerPaidCount}
           partnerFriendsCount={partnerFriendsCount}
+          onBuySubscription={goSubscription}
         />
       </div>
     </div>

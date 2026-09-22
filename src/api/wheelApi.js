@@ -33,6 +33,21 @@ export function completeWheelSpin(initData) {
   return postWheel('/api/wheel/spin/complete', initData);
 }
 
+export function fetchWheelCheckoutQuote(initData, durationKey, target) {
+  return postWheel('/api/wheel/checkout/quote', initData, {
+    duration_key: durationKey,
+    target,
+  });
+}
+
+export function createWheelCheckout(initData, { duration_key, target, payment }) {
+  return postWheel('/api/wheel/checkout/create', initData, {
+    duration_key,
+    target,
+    payment,
+  });
+}
+
 export function isWheelApiConfigured() {
   return Boolean(API_BASE) || import.meta.env.DEV;
 }
