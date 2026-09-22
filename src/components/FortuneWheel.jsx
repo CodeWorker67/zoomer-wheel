@@ -169,6 +169,17 @@ export default function FortuneWheel({ onScreenChange }) {
     setScreen('wheel');
     onScreenChange?.(true);
   }, [onScreenChange]);
+
+  useEffect(() => {
+    const scrollTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    scrollTop();
+    requestAnimationFrame(scrollTop);
+  }, [screen]);
+
   const speedDegPerSec = useRef(BASE_WHEEL_SPEED_DEG);
   const deceleratingRef = useRef(false);
   const spinAnimationRef = useRef(null);
